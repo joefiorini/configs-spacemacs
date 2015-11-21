@@ -13,7 +13,7 @@ values."
    dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.config/spacemacs")
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
@@ -35,6 +35,7 @@ values."
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
+     osx
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -61,7 +62,7 @@ values."
    ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
    ;; unchanged. (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'hybrid
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -98,7 +99,7 @@ values."
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "M-m"
+   dotspacemacs-emacs-leader-key "M-SPC"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
@@ -192,12 +193,18 @@ values."
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
+  ;(require 'evil-surround)
+  ;;(global-evil-surround-mode 1)
   )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  ;; map multiple states at once (courtesy of Michael Markert;
+  ;; http://permalink.gmane.org/gmane.emacs.vim-emulation/1674)
+
+  (load "~/.spacemacs.d/mappings.el")
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
