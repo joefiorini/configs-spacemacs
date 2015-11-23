@@ -64,6 +64,6 @@
   ;;; Visual mode
   (set-in-all-evil-states-but-insert "h" 'evil-visual-char)
   (set-in-all-evil-states-but-insert "H" 'evil-visual-line)
-  (set-in-all-evil-states-but-insert "\C-h" 'mark-whole-buffer)
+  ;(set-in-all-evil-states-but-insert "\C-h" 'mark-whole-buffer)
 
   (provide 'mappings)
