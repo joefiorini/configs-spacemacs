@@ -23,19 +23,21 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; auto-completion
+     auto-completion
      ;; better-defaults
      emacs-lisp
-     ;; git
+     dash
+     git
      ;; markdown
-     ;; org
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
+     syntax-checking
+     version-control
      osx
+     react
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -205,6 +207,12 @@ layers configuration. You are free to put any user code."
   ;; http://permalink.gmane.org/gmane.emacs.vim-emulation/1674)
 
   (load "~/.spacemacs.d/mappings.el")
+
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  (setq evil-shift-width 2)
+  (setq-default indent-tabs-mode nil)
+  (setq-default js2-basic-offset 2)
+  (setq-default js-indent-level 2)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
