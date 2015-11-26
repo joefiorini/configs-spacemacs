@@ -211,8 +211,29 @@ layers configuration. You are free to put any user code."
   (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
   (setq evil-shift-width 2)
   (setq-default indent-tabs-mode nil)
-  (setq-default js2-basic-offset 2)
+  (setq-default
+   ;; js2-mode
+   js2-basic-offset 2
+   js2-bounce-indent t
+   ;; web-mode
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2
+  )
+
   (setq-default js-indent-level 2)
+
+  (eval-after-load 'tern
+    '(progn
+       (require 'tern-auto-complete)
+       (tern-ac-setup)))
+
+  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+
+  ;; auto-save all buffers when switching windows
+  (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
