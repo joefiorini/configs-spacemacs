@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+/Applications/Emacs.app/Contents/MacOS/Emacs $argv
