@@ -38,6 +38,8 @@ values."
      version-control
      osx
      react
+     elm
+     shell-scripts
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -81,10 +83,10 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light
+   dotspacemacs-themes '(solarized-dark
                          solarized-light
-                         solarized-dark
+                         spacemacs-dark
+                         spacemacs-light
                          leuven
                          monokai
                          zenburn)
@@ -92,7 +94,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Hack"
                                :size 13
                                :weight normal
                                :width normal
@@ -221,6 +223,7 @@ layers configuration. You are free to put any user code."
    web-mode-css-indent-offset 2
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2
+   flycheck-javascript-eslint-executable ./node_modules/.bin/eslint.js
   )
 
   (setq-default js-indent-level 2)
@@ -230,7 +233,7 @@ layers configuration. You are free to put any user code."
        (require 'tern-auto-complete)
        (tern-ac-setup)))
 
-  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+  ;; (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
 
   ;; auto-save all buffers when switching windows
   (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
