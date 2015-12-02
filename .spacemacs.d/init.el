@@ -38,6 +38,7 @@ values."
      version-control
      osx
      react
+     ruby-on-rails
      elm
      shell-scripts
      )
@@ -45,7 +46,10 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages
+   '(
+     magit-gh-pulls
+     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -217,26 +221,30 @@ layers configuration. You are free to put any user code."
    ;; js2-mode
    js2-basic-offset 2
    js2-bounce-indent t
+   js2-mode-show-parse-errors f
    ;; web-mode
    css-indent-offset 2
    web-mode-markup-indent-offset 2
    web-mode-css-indent-offset 2
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2
-   flycheck-javascript-eslint-executable ./node_modules/.bin/eslint.js
+   ;; flycheck-javascript-eslint-executable "./node_modules/.bin/eslint"
   )
 
   (setq-default js-indent-level 2)
 
-  (eval-after-load 'tern
-    '(progn
-       (require 'tern-auto-complete)
-       (tern-ac-setup)))
+  
 
   ;; (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
 
   ;; auto-save all buffers when switching windows
   (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+
+  ;; (require 'magit-gh-pulls)
+  ;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+
+  ;; This will be in spacemacs master soon, remove when it is
+  (evil-leader/set-key "gc" 'magit-checkout)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
