@@ -49,6 +49,7 @@ values."
    dotspacemacs-additional-packages
    '(
      magit-gh-pulls
+     ruby-hash-syntax
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
@@ -221,7 +222,7 @@ layers configuration. You are free to put any user code."
    ;; js2-mode
    js2-basic-offset 2
    js2-bounce-indent t
-   js2-mode-show-parse-errors f
+   js2-mode-show-parse-errors nil
    ;; web-mode
    css-indent-offset 2
    web-mode-markup-indent-offset 2
@@ -229,6 +230,7 @@ layers configuration. You are free to put any user code."
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2
    ;; flycheck-javascript-eslint-executable "./node_modules/.bin/eslint"
+   flycheck-eslintrc ".eslintrc"
   )
 
   (setq-default js-indent-level 2)
@@ -245,7 +247,26 @@ layers configuration. You are free to put any user code."
 
   ;; This will be in spacemacs master soon, remove when it is
   (evil-leader/set-key "gc" 'magit-checkout)
+
+  (add-hook 'scss-mode-hook 'flycheck-mode)
+  (add-hook 'ruby-mode-hook (require 'ruby-hash-syntax))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-scss-lintrc "./integrations/hound/scss.yml")
+ '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-strict-warnings nil)
+ '(paradox-github-token t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
