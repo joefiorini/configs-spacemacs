@@ -18,6 +18,9 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     eyebrowse
+     yaml
+     markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -29,7 +32,8 @@ values."
      dash
      git
      ;; markdown
-     org
+     (org :variables
+          org-enable-github-support t)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -41,6 +45,9 @@ values."
      ruby-on-rails
      elm
      shell-scripts
+     (ruby :variables
+           ruby-test-runner 'rspec
+           ruby-enable-enh-ruby-mode t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -48,7 +55,6 @@ values."
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages
    '(
-     magit-gh-pulls
      ruby-hash-syntax
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -99,7 +105,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Hack"
+   dotspacemacs-default-font '("Fira Code"
                                :size 13
                                :weight normal
                                :width normal
@@ -235,6 +241,9 @@ layers configuration. You are free to put any user code."
 
   (setq-default js-indent-level 2)
 
+  ;; Enabled for FiraCode font
+  (mac-auto-operator-composition-mode)
+
   
 
   ;; (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
@@ -244,9 +253,6 @@ layers configuration. You are free to put any user code."
 
   ;; (require 'magit-gh-pulls)
   ;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
-
-  ;; This will be in spacemacs master soon, remove when it is
-  (evil-leader/set-key "gc" 'magit-checkout)
 
   (add-hook 'scss-mode-hook 'flycheck-mode)
   (add-hook 'ruby-mode-hook (require 'ruby-hash-syntax))
@@ -259,10 +265,14 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flycheck-scss-lintrc "./integrations/hound/scss.yml")
- '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-parse-errors nil t)
  '(js2-mode-show-strict-warnings nil)
- '(paradox-github-token t))
+ '(safe-local-variable-values
+   (quote
+    ((flycheck-disabled-checkers ruby-rubocop)
+     (flycheck-disabled-checkers quote
+                                 (ruby-rubocop))))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
