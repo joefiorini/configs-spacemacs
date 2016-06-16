@@ -256,6 +256,44 @@ layers configuration. You are free to put any user code."
 
   (add-hook 'scss-mode-hook 'flycheck-mode)
   (add-hook 'ruby-mode-hook (require 'ruby-hash-syntax))
+
+  (defun vruby-activate ()
+    "Activate a vruby instance"
+    (interactive)
+    (setenv "VRUBY" (concat default-directory "vruby/2.3.1"))
+    (setenv "RUBY_VERSION" "2.3.1")
+    (setenv "RUBY_ENGINE" "ruby")
+    (setenv "RUBY_ROOT" (concat default-directory "vruby/2.3.1"))
+    (setenv "GEM_HOME" (concat default-directory ".gem/" (getenv "RUBY_ENGINE") "/" (getenv "RUBY_VERSION")))
+    (setenv "GEM_PATH" (getenv "GEM_HOME"))
+
+    (add-to-list 'exec-path (concat default-directory "vruby/2.3.1/bin"))
+    (add-to-list 'exec-path (concat (getenv "GEM_HOME") "/bin"))
+
+    (setenv "PATH" (concat (getenv "GEM_HOME") "/bin" path-separator default-directory "vruby/2.3.1/bin" path-separator (getenv "PATH")))
+    (setq eshell-path-env (getenv "PATH"))
+  )
+
+  (evil-leader/set-key "or" 'vruby-activate)
+
+  ;; Help performance when loading large buffers
+  (setq line-number-display-limit large-file-warning-threshold)
+  (setq line-number-display-limit-width 200)
+
+  (defun my--is-file-lage ()
+    "If buffer too lage and may cause performance issue."
+    (< large-file-warning-threshold (buffer-size)))
+
+  (define-derived-mode my-large-file-mode fundamental-mode "LargeFile"
+    "Fixes performance issues in Emacs for large files."
+    (setq bidi-display-reordering nil)
+    (jit-lock-mode nil)
+    (buffer-disable-undo)
+    (set (make-variable-buffer-local 'global-hl-line-mode) nil)
+    (set (make-variable-buffer-local 'line-number-mode) nil)
+    (set (make-variable-buffer-local 'column-number-mode) nil))
+
+  (add-to-list 'magic-mode-alist (cons #'my--is-file-lage #'my-large-file-mode))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
