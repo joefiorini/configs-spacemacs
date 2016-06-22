@@ -18,7 +18,6 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
-     eyebrowse
      yaml
      markdown
      ;; ----------------------------------------------------------------
@@ -45,6 +44,7 @@ values."
      ruby-on-rails
      elm
      shell-scripts
+     import-js
      (ruby :variables
            ruby-test-runner 'rspec
            ruby-enable-enh-ruby-mode t)
@@ -55,7 +55,7 @@ values."
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages
    '(
-     ruby-hash-syntax
+     import-js
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
@@ -221,7 +221,7 @@ layers configuration. You are free to put any user code."
 
   (load "~/.spacemacs.d/mappings.el")
 
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
   (setq evil-shift-width 2)
   (setq-default indent-tabs-mode nil)
   (setq-default
@@ -241,6 +241,7 @@ layers configuration. You are free to put any user code."
 
   (setq-default js-indent-level 2)
 
+  (setq import-js-project-root "/Users/joe/Code/LendingHome-monolith/consumer/")
   ;; Enabled for FiraCode font
   (mac-auto-operator-composition-mode)
 
@@ -255,7 +256,6 @@ layers configuration. You are free to put any user code."
   ;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
   (add-hook 'scss-mode-hook 'flycheck-mode)
-  (add-hook 'ruby-mode-hook (require 'ruby-hash-syntax))
 
   (defun vruby-activate ()
     "Activate a vruby instance"
@@ -303,11 +303,12 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-mode-show-parse-errors nil t)
+ '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
  '(safe-local-variable-values
    (quote
-    ((flycheck-disabled-checkers ruby-rubocop)
+    ((import-js-projct-root . "~/Code/LendingHome-monolith")
+     (flycheck-disabled-checkers ruby-rubocop)
      (flycheck-disabled-checkers quote
                                  (ruby-rubocop))))))
 
