@@ -18,6 +18,7 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     nginx
      yaml
      markdown
      ;; ----------------------------------------------------------------
@@ -30,6 +31,7 @@ values."
      emacs-lisp
      dash
      git
+     github
      ;; markdown
      (org :variables
           org-enable-github-support t)
@@ -45,6 +47,8 @@ values."
      elm
      shell-scripts
      import-js
+     prettier
+     scala
      (ruby :variables
            ruby-test-runner 'rspec
            ruby-enable-enh-ruby-mode t)
@@ -147,7 +151,7 @@ values."
    dotspacemacs-helm-position 'bottom
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
-   dotspacemacs-enable-paste-micro-state nil
+   dotspacemacs-enable-paste-micro-state t
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
    dotspacemacs-which-key-delay 0.4
@@ -219,9 +223,16 @@ layers configuration. You are free to put any user code."
   ;; map multiple states at once (courtesy of Michael Markert;
   ;; http://permalink.gmane.org/gmane.emacs.vim-emulation/1674)
 
-  (load "~/.spacemacs.d/mappings.el")
+  ;; (load "~/.spacemacs.d/mappings.el")
 
-  ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  ;; Customize javascript comments because who wants to /* */ everywhere? Bleh!
+  ;; (setq-default web-mode-comment-formats (remove '("javascript" . "/*") web-mode-comment-formats))
+  ;; (add-to-list 'web-mode-comment-formats '("javascript" . "//"))
+  (setq-default web-mode-comment-formats
+                '(("java"       . "/*")
+                  ("javascript" . "//")
+                  ("php"        . "/*")))
   (setq evil-shift-width 2)
   (setq-default indent-tabs-mode nil)
   (setq-default
@@ -241,17 +252,16 @@ layers configuration. You are free to put any user code."
 
   (setq-default js-indent-level 2)
 
+  (setq ruby-insert-encoding-magic-comment nil)
   (setq import-js-project-root "/Users/joe/Code/LendingHome-monolith/consumer/")
   ;; Enabled for FiraCode font
   (mac-auto-operator-composition-mode)
-
-  
 
   ;; (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
 
   ;; auto-save all buffers when switching windows
   (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
-
+  (add-hook 'before-save-hook 'whitespace-cleanup)
   ;; (require 'magit-gh-pulls)
   ;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
@@ -294,6 +304,20 @@ layers configuration. You are free to put any user code."
     (set (make-variable-buffer-local 'column-number-mode) nil))
 
   (add-to-list 'magic-mode-alist (cons #'my--is-file-lage #'my-large-file-mode))
+
+  ;; (add-hook 'spacemacs-post-user-config-hook
+  ;;           (lambda ()
+  ;;             (desktop-save-mode)
+  ;;             (desktop-read)))
+  (spaceline-toggle-version-control-on)
+
+  (defun jf-magit-ci-skip  ()
+    (interactive)
+    (magit-call-git "commit" "--allow-empty" "-m" "[ci skip]")
+    )
+
+  (magit-define-popup-action
+    'magit-commit-popup ?n "[ci skip]" 'jf-magit-ci-skip)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -303,8 +327,12 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-parse-errors nil t)
  '(js2-mode-show-strict-warnings nil)
+ '(magit-bury-buffer-function (quote magit-mode-quit-window))
+ '(package-selected-packages
+   (quote
+    (nginx-mode powerline rake inflections spinner grizzl hydra projectile sbt-mode scala-mode company smartparens bind-map highlight flycheck request helm helm-core yasnippet skewer-mode js2-mode magit magit-popup git-commit with-editor inf-ruby pcre2el magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito ht yaml-mode ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline solarized-theme smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file noflet neotree move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc insert-shebang info+ indent-guide import-js ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-elm flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu ensime enh-ruby-mode emmet-mode elm-mode elisp-slime-nav dumb-jump diff-hl dash-at-point company-web company-tern company-statistics company-shell column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((import-js-projct-root . "~/Code/LendingHome-monolith")
