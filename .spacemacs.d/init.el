@@ -18,6 +18,8 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     html
+     auto-completion
      nginx
      yaml
      markdown
@@ -26,7 +28,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
+     helm
      ;; better-defaults
      emacs-lisp
      dash
@@ -35,14 +37,14 @@ values."
      ;; markdown
      (org :variables
           org-enable-github-support t)
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      syntax-checking
      version-control
      osx
-     react
+     jf-javascript
      ruby-on-rails
      elm
      shell-scripts
@@ -90,7 +92,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'.
    ;; (default '(recents projects))
@@ -118,7 +120,8 @@ values."
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "M-SPC"
+   dotspacemacs-emacs-leader-key "SPC"
+   dotspacemacs-emacs-leader-key "M-m"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
@@ -132,6 +135,7 @@ values."
    dotspacemacs-command-key ":"
    ;; If non nil `Y' is remapped to `y$'. (default t)
    dotspacemacs-remap-Y-to-y$ t
+   dotspacemacs-large-file-size 1
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -225,7 +229,7 @@ layers configuration. You are free to put any user code."
 
   ;; (load "~/.spacemacs.d/mappings.el")
 
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
   ;; Customize javascript comments because who wants to /* */ everywhere? Bleh!
   ;; (setq-default web-mode-comment-formats (remove '("javascript" . "/*") web-mode-comment-formats))
   ;; (add-to-list 'web-mode-comment-formats '("javascript" . "//"))
@@ -311,13 +315,13 @@ layers configuration. You are free to put any user code."
   ;;             (desktop-read)))
   (spaceline-toggle-version-control-on)
 
-  (defun jf-magit-ci-skip  ()
-    (interactive)
-    (magit-call-git "commit" "--allow-empty" "-m" "[ci skip]")
-    )
+  ;; (defun jf-magit-ci-skip  ()
+  ;;   (interactive)
+  ;;   (magit-call-git "commit" "--allow-empty" "-m" "[ci skip]")
+  ;;   )
 
-  (magit-define-popup-action
-    'magit-commit-popup ?n "[ci skip]" 'jf-magit-ci-skip)
+  ;; (magit-define-popup-action
+  ;;   'magit-commit-popup ?n "[ci skip]" 'jf-magit-ci-skip)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -327,12 +331,12 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-mode-show-parse-errors nil t)
+ '(js2-mode-show-parse-errors nil)
  '(js2-mode-show-strict-warnings nil)
  '(magit-bury-buffer-function (quote magit-mode-quit-window))
  '(package-selected-packages
    (quote
-    (nginx-mode powerline rake inflections spinner grizzl hydra projectile sbt-mode scala-mode company smartparens bind-map highlight flycheck request helm helm-core yasnippet skewer-mode js2-mode magit magit-popup git-commit with-editor inf-ruby pcre2el magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito ht yaml-mode ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline solarized-theme smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file noflet neotree move-text mmm-mode minitest markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc insert-shebang info+ indent-guide import-js ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-elm flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu ensime enh-ruby-mode emmet-mode elm-mode elisp-slime-nav dumb-jump diff-hl dash-at-point company-web company-tern company-statistics company-shell column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (yaml-mode ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline powerline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters pug-mode projectile-rails rake inflections popwin phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox spinner ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org org-pomodoro alert log4e gntp org-plus-contrib org-download org-bullets open-junk-file noflet nginx-mode neotree move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc insert-shebang info+ indent-guide import-js grizzl ido-vertical-mode hydra hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile helm-gitignore request helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md flycheck-pos-tip pos-tip flycheck-elm flycheck pkg-info epl flx-ido flx fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight ensime sbt-mode scala-mode enh-ruby-mode emmet-mode elm-mode elisp-slime-nav dumb-jump f drupal-mode php-mode diminish diff-hl dash-at-point company-web web-completion-data company-tern s dash-functional tern company-statistics company-shell company column-enforce-mode coffee-mode clean-aindent-mode chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup quelpa package-build solarized-theme dash)))
  '(safe-local-variable-values
    (quote
     ((import-js-projct-root . "~/Code/LendingHome-monolith")
@@ -347,3 +351,33 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js2-mode-show-parse-errors nil)
+ '(js2-mode-show-strict-warnings nil)
+ '(magit-bury-buffer-function (quote magit-mode-quit-window))
+ '(package-selected-packages
+   (quote
+    (rjsx-mode add-node-modules-path xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help window-purpose imenu-list zenburn-theme yaml-mode web-mode web-beautify tagedit solarized-theme smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder rbenv pug-mode projectile-rails rake inflections phpunit phpcbf php-extras php-auto-yasnippets pbcopy ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro alert log4e gntp org-download noflet nginx-mode monokai-theme mmm-mode minitest markdown-toc markdown-mode magithub magit-gitflow magit-gh-pulls livid-mode skewer-mode simple-httpd less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc insert-shebang import-js grizzl htmlize helm-gitignore helm-dash helm-css-scss helm-company helm-c-yasnippet haml-mode gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flycheck-pos-tip pos-tip flycheck-elm flycheck fish-mode feature-mode evil-magit magit magit-popup git-commit with-editor ensime sbt-mode scala-mode enh-ruby-mode emmet-mode elm-mode drupal-mode php-mode diff-hl dash-at-point company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company coffee-mode chruby bundler inf-ruby auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+ '(safe-local-variable-values
+   (quote
+    ((import-js-projct-root . "~/Code/LendingHome-monolith")
+     (flycheck-disabled-checkers ruby-rubocop)
+     (flycheck-disabled-checkers quote
+                                 (ruby-rubocop))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+)

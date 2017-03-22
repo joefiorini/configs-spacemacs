@@ -11,7 +11,7 @@
       "if" 'import-js-fix
       "ig" 'import-js-goto))
 
-  (add-hook 'react-mode-hook
+  (add-hook 'rjsx-mode-hook
             '(lambda ()
-                (import-js/set-import-js-keybindings 'react-mode)))
+                (import-js/set-import-js-keybindings 'rjsx-mode)))
   )
