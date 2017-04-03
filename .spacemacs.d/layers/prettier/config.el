@@ -6,6 +6,11 @@
   (load-file "~/.spacemacs.d/layers/prettier/prettier-js.el")
   (require 'prettier-js)
 
+  (defun enable-prettier () (interactive)
+         (add-hook 'before-save-hook 'prettier-before-save))
+
   (add-hook 'rjsx-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook 'prettier-before-save))))
+            (lambda () (enable-prettier)))
+
+  (defun disable-prettier () (interactive)
+         (remove-hook 'before-save-hook 'prettier-before-save)))
